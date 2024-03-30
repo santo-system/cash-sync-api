@@ -33,7 +33,7 @@ export class UsersController {
   @ApiCreatedResponse({ description: 'Usuário criado' })
   @ApiBadRequestResponse({ description: 'Solicitação incorreta' })
   @ApiInternalServerErrorResponse({ description: 'Erro Interno do Servidor' })
-  create(@Body() dto: CreateUserRequestDto) {
+  async create(@Body() dto: CreateUserRequestDto): Promise<any> {
     return this.usersService.create(dto);
   }
 
@@ -41,7 +41,7 @@ export class UsersController {
   @ApiOperation({ summary: 'Listar todos os usuários' })
   @ApiOkResponse({ description: 'Consulta realizada com sucesso' })
   @ApiInternalServerErrorResponse({ description: 'Erro Interno do Servidor' })
-  findAll() {
+  async findAll(): Promise<any> {
     return this.usersService.findAll();
   }
 
@@ -56,7 +56,7 @@ export class UsersController {
   @ApiBadRequestResponse({ description: 'Solicitação incorreta' })
   @ApiNotFoundResponse({ description: 'Recurso não encontrado' })
   @ApiInternalServerErrorResponse({ description: 'Erro Interno do Servidor' })
-  findOne(@Param() { id }: UUIDParamDto) {
+  async findOne(@Param() { id }: UUIDParamDto): Promise<any> {
     return this.usersService.findOne(id);
   }
 
@@ -71,7 +71,10 @@ export class UsersController {
   @ApiBadRequestResponse({ description: 'Solicitação incorreta' })
   @ApiNotFoundResponse({ description: 'Recurso não encontrado' })
   @ApiInternalServerErrorResponse({ description: 'Erro Interno do Servidor' })
-  update(@Param() { id }: UUIDParamDto, @Body() dto: UpdateUserRequestDto) {
+  async update(
+    @Param() { id }: UUIDParamDto,
+    @Body() dto: UpdateUserRequestDto,
+  ): Promise<any> {
     return this.usersService.update(id, dto);
   }
 
@@ -86,10 +89,10 @@ export class UsersController {
   @ApiBadRequestResponse({ description: 'Solicitação incorreta' })
   @ApiNotFoundResponse({ description: 'Recurso não encontrado' })
   @ApiInternalServerErrorResponse({ description: 'Erro Interno do Servidor' })
-  updatePartial(
+  async updatePartial(
     @Param() { id }: UUIDParamDto,
     @Body() dto: UpdateUserRequestDto,
-  ) {
+  ): Promise<any> {
     return this.usersService.update(id, dto);
   }
 
@@ -104,7 +107,7 @@ export class UsersController {
   @ApiBadRequestResponse({ description: 'Solicitação incorreta' })
   @ApiNotFoundResponse({ description: 'Recurso não encontrado' })
   @ApiInternalServerErrorResponse({ description: 'Erro Interno do Servidor' })
-  remove(@Param() { id }: UUIDParamDto) {
+  async remove(@Param() { id }: UUIDParamDto): Promise<any> {
     return this.usersService.remove(id);
   }
 }
