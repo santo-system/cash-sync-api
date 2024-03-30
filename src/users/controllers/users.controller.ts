@@ -1,3 +1,4 @@
+import { UUIDParamDto } from '@lib/common-params/dtos';
 import {
   Body,
   Controller,
@@ -19,9 +20,7 @@ import {
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
-import { CreateUserDto } from '../dto/create-user.dto';
-import { UpdateUserDto } from '../dto/update-user.dto';
-import { UUIDParamDto } from '../dto/uuid-param.dto.input';
+import { CreateUserRequestDto, UpdateUserRequestDto } from '../dtos';
 import { UsersService } from '../services/users.service';
 
 @Controller('users')
@@ -34,7 +33,7 @@ export class UsersController {
   @ApiCreatedResponse({ description: 'Usuário criado' })
   @ApiBadRequestResponse({ description: 'Solicitação incorreta' })
   @ApiInternalServerErrorResponse({ description: 'Erro Interno do Servidor' })
-  create(@Body() dto: CreateUserDto) {
+  create(@Body() dto: CreateUserRequestDto) {
     return this.usersService.create(dto);
   }
 
@@ -72,7 +71,7 @@ export class UsersController {
   @ApiBadRequestResponse({ description: 'Solicitação incorreta' })
   @ApiNotFoundResponse({ description: 'Recurso não encontrado' })
   @ApiInternalServerErrorResponse({ description: 'Erro Interno do Servidor' })
-  update(@Param() { id }: UUIDParamDto, @Body() dto: UpdateUserDto) {
+  update(@Param() { id }: UUIDParamDto, @Body() dto: UpdateUserRequestDto) {
     return this.usersService.update(id, dto);
   }
 
@@ -87,7 +86,10 @@ export class UsersController {
   @ApiBadRequestResponse({ description: 'Solicitação incorreta' })
   @ApiNotFoundResponse({ description: 'Recurso não encontrado' })
   @ApiInternalServerErrorResponse({ description: 'Erro Interno do Servidor' })
-  updatePartial(@Param() { id }: UUIDParamDto, @Body() dto: UpdateUserDto) {
+  updatePartial(
+    @Param() { id }: UUIDParamDto,
+    @Body() dto: UpdateUserRequestDto,
+  ) {
     return this.usersService.update(id, dto);
   }
 
