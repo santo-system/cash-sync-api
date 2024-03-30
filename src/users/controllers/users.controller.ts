@@ -1,4 +1,4 @@
-import { UUIDParamDto } from '@lib/common-params/dtos';
+import { UUIDParamRequestDto } from '@lib/common-params/dtos';
 import {
   Body,
   Controller,
@@ -56,7 +56,7 @@ export class UsersController {
   @ApiBadRequestResponse({ description: 'Solicitação incorreta' })
   @ApiNotFoundResponse({ description: 'Recurso não encontrado' })
   @ApiInternalServerErrorResponse({ description: 'Erro Interno do Servidor' })
-  async findOne(@Param() { id }: UUIDParamDto): Promise<any> {
+  async findOne(@Param() { id }: UUIDParamRequestDto): Promise<any> {
     return this.usersService.findOne(id);
   }
 
@@ -72,7 +72,7 @@ export class UsersController {
   @ApiNotFoundResponse({ description: 'Recurso não encontrado' })
   @ApiInternalServerErrorResponse({ description: 'Erro Interno do Servidor' })
   async update(
-    @Param() { id }: UUIDParamDto,
+    @Param() { id }: UUIDParamRequestDto,
     @Body() dto: UpdateUserRequestDto,
   ): Promise<any> {
     return this.usersService.update(id, dto);
@@ -90,7 +90,7 @@ export class UsersController {
   @ApiNotFoundResponse({ description: 'Recurso não encontrado' })
   @ApiInternalServerErrorResponse({ description: 'Erro Interno do Servidor' })
   async updatePartial(
-    @Param() { id }: UUIDParamDto,
+    @Param() { id }: UUIDParamRequestDto,
     @Body() dto: UpdateUserRequestDto,
   ): Promise<any> {
     return this.usersService.update(id, dto);
@@ -107,7 +107,7 @@ export class UsersController {
   @ApiBadRequestResponse({ description: 'Solicitação incorreta' })
   @ApiNotFoundResponse({ description: 'Recurso não encontrado' })
   @ApiInternalServerErrorResponse({ description: 'Erro Interno do Servidor' })
-  async remove(@Param() { id }: UUIDParamDto): Promise<any> {
+  async remove(@Param() { id }: UUIDParamRequestDto): Promise<any> {
     return this.usersService.remove(id);
   }
 }
