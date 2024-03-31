@@ -19,30 +19,44 @@ import {
   ApiOperation,
   ApiParam,
   ApiTags,
+  ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
-import { CreateUserRequestDto, UpdateUserRequestDto } from '../dtos';
-import { UsersService } from '../services/users.service';
+import {
+  CreateUserRequestDto,
+  UpdateUserRequestDto,
+  UserResponseDto,
+} from '../dtos';
+import { UserService } from '../services/user.service';
 
 @Controller('users')
 @ApiTags('users')
-export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+export class UserController {
+  constructor(private readonly userService: UserService) {}
 
   @Post()
   @ApiOperation({ summary: 'Criar um usuário' })
-  @ApiCreatedResponse({ description: 'Usuário criado' })
+  @ApiCreatedResponse({
+    description: 'Recurso criado',
+    type: UserResponseDto,
+  })
   @ApiBadRequestResponse({ description: 'Solicitação incorreta' })
+  @ApiUnprocessableEntityResponse({
+    description: 'Recurso não foi criado',
+  })
   @ApiInternalServerErrorResponse({ description: 'Erro Interno do Servidor' })
-  async create(@Body() dto: CreateUserRequestDto): Promise<any> {
-    return this.usersService.create(dto);
+  async create(@Body() dto: CreateUserRequestDto): Promise<UserResponseDto> {
+    return await this.userService.create(dto);
   }
 
   @Get()
   @ApiOperation({ summary: 'Listar todos os usuários' })
-  @ApiOkResponse({ description: 'Consulta realizada com sucesso' })
+  @ApiOkResponse({
+    description: 'Consulta realizada',
+    type: [UserResponseDto],
+  })
   @ApiInternalServerErrorResponse({ description: 'Erro Interno do Servidor' })
-  async findAll(): Promise<any> {
-    return this.usersService.findAll();
+  async findAll(): Promise<UserResponseDto[]> {
+    return await this.userService.findAll();
   }
 
   @Get(':id')
@@ -52,12 +66,17 @@ export class UsersController {
     name: 'id',
     example: '986dcaf4-c1ea-4218-b6b4-e4fd95a3c28e',
   })
-  @ApiOkResponse({ description: 'Consulta realizada com sucesso' })
+  @ApiOkResponse({
+    description: 'Consulta realizada',
+    type: UserResponseDto,
+  })
   @ApiBadRequestResponse({ description: 'Solicitação incorreta' })
   @ApiNotFoundResponse({ description: 'Recurso não encontrado' })
   @ApiInternalServerErrorResponse({ description: 'Erro Interno do Servidor' })
-  async findOne(@Param() { id }: UUIDParamRequestDto): Promise<any> {
-    return this.usersService.findOne(id);
+  async findOne(
+    @Param() { id }: UUIDParamRequestDto,
+  ): Promise<UserResponseDto> {
+    return this.userService.findOne(id);
   }
 
   @Put(':id')
@@ -67,15 +86,18 @@ export class UsersController {
     name: 'id',
     example: '986dcaf4-c1ea-4218-b6b4-e4fd95a3c28e',
   })
-  @ApiOkResponse({ description: 'Usuário atualizado' })
+  @ApiOkResponse({ description: 'Recurso atualizado' })
   @ApiBadRequestResponse({ description: 'Solicitação incorreta' })
+  @ApiUnprocessableEntityResponse({
+    description: 'Recurso não foi atualizado',
+  })
   @ApiNotFoundResponse({ description: 'Recurso não encontrado' })
   @ApiInternalServerErrorResponse({ description: 'Erro Interno do Servidor' })
   async update(
     @Param() { id }: UUIDParamRequestDto,
     @Body() dto: UpdateUserRequestDto,
   ): Promise<any> {
-    return this.usersService.update(id, dto);
+    return this.userService.update(id, dto);
   }
 
   @Patch(':id')
@@ -85,15 +107,18 @@ export class UsersController {
     name: 'id',
     example: '986dcaf4-c1ea-4218-b6b4-e4fd95a3c28e',
   })
-  @ApiOkResponse({ description: 'Usuário atualizado parcialmente' })
+  @ApiOkResponse({ description: 'Recurso atualizado parcialmente' })
   @ApiBadRequestResponse({ description: 'Solicitação incorreta' })
+  @ApiUnprocessableEntityResponse({
+    description: 'Recurso não foi atualizado',
+  })
   @ApiNotFoundResponse({ description: 'Recurso não encontrado' })
   @ApiInternalServerErrorResponse({ description: 'Erro Interno do Servidor' })
   async updatePartial(
     @Param() { id }: UUIDParamRequestDto,
     @Body() dto: UpdateUserRequestDto,
   ): Promise<any> {
-    return this.usersService.update(id, dto);
+    return this.userService.updatePartial(id, dto);
   }
 
   @Delete(':id')
@@ -103,11 +128,11 @@ export class UsersController {
     name: 'id',
     example: '986dcaf4-c1ea-4218-b6b4-e4fd95a3c28e',
   })
-  @ApiNoContentResponse({ description: 'Usuário removido' })
+  @ApiNoContentResponse({ description: 'Recurso removido' })
   @ApiBadRequestResponse({ description: 'Solicitação incorreta' })
   @ApiNotFoundResponse({ description: 'Recurso não encontrado' })
   @ApiInternalServerErrorResponse({ description: 'Erro Interno do Servidor' })
   async remove(@Param() { id }: UUIDParamRequestDto): Promise<any> {
-    return this.usersService.remove(id);
+    return this.userService.remove(id);
   }
 }

@@ -1,14 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsAlpha, IsEmail, IsString, IsStrongPassword } from 'class-validator';
+import { IsAscii, IsEmail, IsString, IsStrongPassword } from 'class-validator';
 
 export class CreateUserRequestDto {
   @IsString()
-  @IsAlpha()
-  @ApiProperty()
+  @IsAscii()
+  @ApiProperty({ description: 'Nome do usuário' })
   readonly name: string;
 
   @IsEmail()
-  @ApiProperty()
+  @ApiProperty({ description: 'E-mail do usuário' })
   readonly email: string;
 
   @IsStrongPassword({
@@ -18,6 +18,6 @@ export class CreateUserRequestDto {
     minUppercase: 0,
     minSymbols: 0,
   })
-  @ApiProperty({ minLength: 6 })
+  @ApiProperty({ description: 'Senha do usuário', minLength: 6 })
   readonly password: string;
 }
