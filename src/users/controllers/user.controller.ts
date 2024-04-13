@@ -76,7 +76,7 @@ export class UserController {
   async findOne(
     @Param() { id }: UUIDParamRequestDto,
   ): Promise<UserResponseDto> {
-    return this.userService.findOne(id);
+    return await this.userService.findOne(id);
   }
 
   @Put(':id')
@@ -97,7 +97,7 @@ export class UserController {
     @Param() { id }: UUIDParamRequestDto,
     @Body() dto: UpdateUserRequestDto,
   ): Promise<any> {
-    return this.userService.update(id, dto);
+    return await this.userService.update(id, dto);
   }
 
   @Patch(':id')
@@ -118,7 +118,7 @@ export class UserController {
     @Param() { id }: UUIDParamRequestDto,
     @Body() dto: UpdateUserRequestDto,
   ): Promise<any> {
-    return this.userService.updatePartial(id, dto);
+    return await this.userService.updatePartial(id, dto);
   }
 
   @Delete(':id')
@@ -133,6 +133,6 @@ export class UserController {
   @ApiNotFoundResponse({ description: 'Recurso não encontrado' })
   @ApiInternalServerErrorResponse({ description: 'Erro Interno do Servidor' })
   async remove(@Param() { id }: UUIDParamRequestDto): Promise<any> {
-    return this.userService.remove(id);
+    return await this.userService.remove(id);
   }
 }
