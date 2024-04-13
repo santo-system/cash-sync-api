@@ -1,7 +1,9 @@
-import { ApiProperty, PartialType } from '@nestjs/swagger';
+import { ApiProperty, OmitType } from '@nestjs/swagger';
 import { CreateUserRequestDto } from '../request/create-user.req.dto';
 
-export class UserResponseDto extends PartialType(CreateUserRequestDto) {
+export class UserResponseDto extends OmitType(CreateUserRequestDto, [
+  'password',
+] as const) {
   @ApiProperty({
     description: 'Id do registro',
     name: 'id',
