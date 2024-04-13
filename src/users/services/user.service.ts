@@ -1,5 +1,6 @@
 import {
   Injectable,
+  Logger,
   NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
@@ -15,7 +16,8 @@ export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(data: CreateUserRequestDto): Promise<UserResponseDto> {
-    return await this.prisma.user.create({ data }).catch(() => {
+    return await this.prisma.user.create({ data }).catch((error) => {
+      Logger.error(error);
       throw new UnprocessableEntityException();
     });
   }
@@ -31,7 +33,8 @@ export class UserService {
           id,
         },
       })
-      .catch(() => {
+      .catch((error) => {
+        Logger.error(error);
         throw new NotFoundException();
       });
   }
@@ -45,7 +48,8 @@ export class UserService {
           id,
         },
       })
-      .catch(() => {
+      .catch((error) => {
+        Logger.error(error);
         throw new UnprocessableEntityException();
       });
   }
@@ -59,19 +63,21 @@ export class UserService {
           id,
         },
       })
-      .catch(() => {
+      .catch((error) => {
+        Logger.error(error);
         throw new UnprocessableEntityException();
       });
   }
 
   async remove(id: string) {
-    return this.prisma.user
+    return await this.prisma.user
       .delete({
         where: {
           id,
         },
       })
-      .catch(() => {
+      .catch((error) => {
+        Logger.error(error);
         throw new NotFoundException();
       });
   }
